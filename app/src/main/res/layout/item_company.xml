@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginStart="4dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginEnd="4dp"
+    android:layout_marginBottom="2dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="4dp">
+
+        <TextView
+            android:id="@+id/tv_company_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="À LA CARTE PRIRODNO KUHANJE, obrt za pripremu obroka i nutricionističko savjetovanje, vl. Darko Dragaš, Valbandon, Dragonja 27"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <TextView
+            android:id="@+id/tv_company_oib"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="@string/oib"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+        <TextView
+            android:id="@+id/tv_company_supported_employees"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="@string/supported_employees"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+        <TextView
+            android:id="@+id/tv_company_support_paid_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="@string/paid_out_support"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,2 @@
+rootProject.name='Korisnici Potpore'
+include ':app'

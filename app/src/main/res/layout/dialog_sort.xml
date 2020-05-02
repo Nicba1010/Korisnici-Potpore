@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <!-- Parent is not useless, it exists to force a larger Dialog -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp"
+            android:text="@string/sort_by"
+            android:textColor="@color/colorPrimary" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+
+            <TextView
+                style="@style/SortTitleTextView"
+                android:text="@string/name" />
+
+            <TextView
+                style="@style/SortTitleTextView"
+                android:text="@string/pin" />
+
+            <TextView
+                style="@style/SortTitleTextView"
+                android:text="@string/workers" />
+
+            <TextView
+                style="@style/SortTitleTextView"
+                android:text="@string/paid_out" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+
+            <ImageView
+                android:id="@+id/iv_name_up"
+                style="@style/SortIconImageView.Up" />
+
+            <ImageView
+                android:id="@+id/iv_pin_up"
+                style="@style/SortIconImageView.Up" />
+
+            <ImageView
+                android:id="@+id/iv_workers_up"
+                style="@style/SortIconImageView.Up" />
+
+            <ImageView
+                android:id="@+id/iv_paid_out_up"
+                style="@style/SortIconImageView.Up" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="16dp">
+
+            <ImageView
+                android:id="@+id/iv_name_down"
+                style="@style/SortIconImageView.Down" />
+
+            <ImageView
+                android:id="@+id/iv_pin_down"
+                style="@style/SortIconImageView.Down" />
+
+            <ImageView
+                android:id="@+id/iv_workers_down"
+                style="@style/SortIconImageView.Down" />
+
+            <ImageView
+                android:id="@+id/iv_paid_out_down"
+                style="@style/SortIconImageView.Down" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

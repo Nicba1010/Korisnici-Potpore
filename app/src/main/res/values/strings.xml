@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Korisnici Potpore</string>
+
+    <string name="paid_out_support">Isplacena potpora: %1$s kn</string>
+    <string name="oib">OIB: %1$s</string>
+    <string name="supported_employees">Broj radnika pod potporom: %1$d</string>
+    <string name="data_partially_loaded">Podatci djelomično učitani</string>
+
+    <string name="sort_by">Sortiraj po</string>
+    <string name="sorted_by_direction_sort_key">Sortirano %1$s po %2$s</string>
+    <string name="ascending">uzlazno</string>
+    <string name="descending">silazno</string>
+    <string name="by_name">imenu firme</string>
+    <string name="by_pin">OIB-u</string>
+    <string name="by_num_of_workers">broju radnika</string>
+    <string name="by_paid_out_support">isplaćenoj potpori</string>
+
+    <string name="name">Ime</string>
+    <string name="pin">OIB</string>
+    <string name="workers">Radnici</string>
+    <string name="paid_out">Isplaćeno</string>
+
+</resources>

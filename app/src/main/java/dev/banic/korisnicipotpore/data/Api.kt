@@ -1,4 +1,4 @@
-package dev.banic.korisnicipotpore
+package dev.banic.korisnicipotpore.data
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -15,9 +15,10 @@ interface Api {
     fun getCompanyPaymentData(@Body body: CompanyPaymentDataRequest): Call<CompanyPaymentData>
 
     data class CompanyPaymentDataRequest(
+        val year: Int,
+        val month: Int,
         val pageSize: Int = DEFAULT_PAGE_SIZE,
-        val pageIndex: Int = 1,
-        val month: Int
+        val pageIndex: Int = 1
     )
 
     data class CompanyPaymentData(
@@ -43,11 +44,15 @@ interface Api {
 
         private const val BASE_URL: String = "https://mjera-orm.hzz.hr/api/"
         private val GSON: Gson = GsonBuilder().create()
-        private val GSON_CONVERTER_FACTORY: GsonConverterFactory = GsonConverterFactory.create(GSON)
+        private val GSON_CONVERTER_FACTORY: GsonConverterFactory = GsonConverterFactory.create(
+            GSON
+        )
         private val RETROFIT: Retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GSON_CONVERTER_FACTORY)
             .build()
-        val INSTANCE: Api = RETROFIT.create(Api::class.java)
+        val INSTANCE: Api = RETROFIT.create(
+            Api::class.java
+        )
     }
 }

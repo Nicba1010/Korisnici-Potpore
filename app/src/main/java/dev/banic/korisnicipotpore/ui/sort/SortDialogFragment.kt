@@ -1,6 +1,5 @@
-package dev.banic.korisnicipotpore
+package dev.banic.korisnicipotpore.ui.sort
 
-import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,15 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.DialogFragment
-import dev.banic.korisnicipotpore.CompanyAdapter.Companion.SortKey
+import dev.banic.korisnicipotpore.ui.list.CompanyAdapter.Companion.SortKey
+import dev.banic.korisnicipotpore.R
 import kotlinx.android.synthetic.main.dialog_sort.view.*
 
 
 class SortDialogFragment : DialogFragment() {
-    lateinit var sortKey: SortKey
-    var sortAscending: Boolean = true
+    private lateinit var sortKey: SortKey
+    private var sortAscending: Boolean = true
 
-    lateinit var onSortChosenListener: OnSortChosenListener
+    var onSortChosenListener: OnSortChosenListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,15 +28,6 @@ class SortDialogFragment : DialogFragment() {
         sortAscending = arguments?.getBoolean(SORT_ASCENDING_ARGUMENT)
             ?: throw IllegalStateException(
                 "SortDialogFragment initialized without SORT_ASCENDING_ARGUMENT"
-            )
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        onSortChosenListener = (context as? OnSortChosenListener)
-            ?: throw IllegalStateException(
-                "Activity creating the SortDialogFragment needs to implement OnSortChosenListener"
             )
     }
 
@@ -69,7 +60,7 @@ class SortDialogFragment : DialogFragment() {
                 )
             }
             iv.setOnClickListener {
-                onSortChosenListener.onSortChosen(sortKey, sortAscending)
+                onSortChosenListener?.onSortChosen(sortKey, sortAscending)
                 dismiss()
             }
         }

@@ -1,4 +1,4 @@
-package dev.banic.korisnicipotpore
+package dev.banic.korisnicipotpore.util
 
 import android.widget.ImageView
 import android.widget.SearchView

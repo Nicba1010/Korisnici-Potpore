@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Korisnici Potpore</string>
 
+    <string name="name">Ime</string>
+    <string name="pin">OIB</string>
+    <string name="workers">Radnici</string>
+    <string name="paid_out">Isplaćeno</string>
+
     <string name="paid_out_support">Isplacena potpora: %1$s kn</string>
     <string name="oib">OIB: %1$s</string>
     <string name="supported_employees">Broj radnika pod potporom: %1$d</string>
@@ -15,9 +20,12 @@
     <string name="by_num_of_workers">broju radnika</string>
     <string name="by_paid_out_support">isplaćenoj potpori</string>
 
-    <string name="name">Ime</string>
-    <string name="pin">OIB</string>
-    <string name="workers">Radnici</string>
-    <string name="paid_out">Isplaćeno</string>
+    <string name="data_completely_loaded">Podatci potpuno učitani</string>
+    <string name="local_data_updated">Lokalni podatci ažurirani</string>
+    <string name="please_enable_network">Potrebna je internetska veza</string>
+    <string name="enable_network">Osposobi vezu</string>
+    <string name="trying_to_connect">Testiranje mreže</string>
+    <string name="please_enable_network_manually">Molimo Vas da ručno upalite WiFi ili mobilne podatke</string>
+    <string name="unexpected_error_loading_data">Unexpected error loading data</string>
 
 </resources>

@@ -1,4 +1,4 @@
-package dev.banic.korisnicipotpore
+package dev.banic.korisnicipotpore.ui.list
 
 import android.icu.text.DecimalFormat
 import android.view.LayoutInflater
@@ -7,8 +7,9 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
-import dev.banic.korisnicipotpore.Api.CompanyPaymentData.Company
-import dev.banic.korisnicipotpore.CompanyAdapter.Companion.SortKey.*
+import dev.banic.korisnicipotpore.data.Api.CompanyPaymentData.Company
+import dev.banic.korisnicipotpore.R
+import dev.banic.korisnicipotpore.ui.list.CompanyAdapter.Companion.SortKey.*
 import kotlinx.android.synthetic.main.item_company.view.*
 
 class CompanyAdapter(

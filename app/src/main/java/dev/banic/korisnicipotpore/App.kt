@@ -7,6 +7,7 @@ import timber.log.Timber
 import timber.log.Timber.DebugTree
 
 
+@Suppress("unused")
 class App : Application() {
     override fun onCreate() {
         super.onCreate()

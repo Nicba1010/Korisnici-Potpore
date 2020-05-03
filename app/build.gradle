@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
@@ -27,25 +28,91 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+
+    packagingOptions {
+        exclude 'META-INF/rxjava.properties'
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    // Core
     implementation 'androidx.core:core-ktx:1.2.0'
+
+    // Appcompat
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+
+    // Material
     implementation 'com.google.android.material:material:1.1.0'
+
+    // Dagger
+    implementation "com.google.dagger:dagger:$dagger_version"
+    implementation "com.google.dagger:dagger-android-support:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+
+    // Layouts
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+
+    // GSON
+    implementation 'com.google.code.gson:gson:2.8.5'
+
+    // Navigation
     implementation 'androidx.navigation:navigation-fragment-ktx:2.2.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.2'
-    implementation 'com.google.code.gson:gson:2.8.5'
+
+    // Timber
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    // Koin for Android
+    implementation "org.koin:koin-android:$koin_version"
+    implementation "org.koin:koin-androidx-scope:$koin_version"
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+    implementation "org.koin:koin-androidx-fragment:$koin_version"
+
+    // Rx
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.3'
+    implementation 'io.reactivex.rxjava3:rxkotlin:3.0.0'
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+
+    // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
-    implementation 'com.jakewharton.timber:timber:4.7.1'
+    // TODO: Replace this with the official version once it allows for RxJava3 Usage
+    implementation('com.github.mickverm:retrofit:673a4b2') {
+        exclude group: "com.github.mickverm.retrofit", module: "retrofit"
+        exclude group: "com.github.mickverm.retrofit", module: "adapter-guava"
+        exclude group: "com.github.mickverm.retrofit", module: "adapter-java8"
+        exclude group: "com.github.mickverm.retrofit", module: "adapter-rxjava"
+        exclude group: "com.github.mickverm.retrofit", module: "adapter-rxjava2"
+        // This whole mess exists so that we can only include rxjava3
+        // exclude group: "com.github.mickverm.retrofit", module: "adapter-rxjava3"
+        exclude group: "com.github.mickverm.retrofit", module: "adapter-scala"
+        exclude group: "com.github.mickverm.retrofit", module: "converter-guava"
+        exclude group: "com.github.mickverm.retrofit", module: "converter-gson"
+        exclude group: "com.github.mickverm.retrofit", module: "converter-jackson"
+        exclude group: "com.github.mickverm.retrofit", module: "converter-java8"
+        exclude group: "com.github.mickverm.retrofit", module: "converter-jaxb"
+        exclude group: "com.github.mickverm.retrofit", module: "converter-moshi"
+        exclude group: "com.github.mickverm.retrofit", module: "converter-protobuf"
+        exclude group: "com.github.mickverm.retrofit", module: "converter-scalars"
+        exclude group: "com.github.mickverm.retrofit", module: "converter-simplexml"
+        exclude group: "com.github.mickverm.retrofit", module: "converter-wire"
+        exclude group: "com.github.mickverm.retrofit", module: "retrofit-mock"
+        exclude group: "com.github.mickverm.retrofit", module: "samples"
+        exclude group: "com.github.mickverm.retrofit", module: "retrofit-mock"
+        exclude group: "com.github.mickverm.retrofit", module: "converter-moshi"
+        exclude group: "com.github.mickverm.retrofit", module: "converter-simplexml"
+        exclude group: "com.github.mickverm.retrofit", module: "adapter-rxjava"
+    }
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

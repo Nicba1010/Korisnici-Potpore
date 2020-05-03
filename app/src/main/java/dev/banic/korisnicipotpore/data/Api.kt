@@ -3,8 +3,10 @@ package dev.banic.korisnicipotpore.data
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
+import io.reactivex.rxjava3.core.Single
 import retrofit2.Call
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -12,7 +14,7 @@ import retrofit2.http.POST
 
 interface Api {
     @POST("GetCompanyPaymentData")
-    fun getCompanyPaymentData(@Body body: CompanyPaymentDataRequest): Call<CompanyPaymentData>
+    fun getCompanyPaymentData(@Body body: CompanyPaymentDataRequest): Single<CompanyPaymentData>
 
     data class CompanyPaymentDataRequest(
         val year: Int,
@@ -47,12 +49,12 @@ interface Api {
         private val GSON_CONVERTER_FACTORY: GsonConverterFactory = GsonConverterFactory.create(
             GSON
         )
+        private val RX_JAVA_3_CALL_ADAPTER_FACTORY = RxJava3CallAdapterFactory.create()
         private val RETROFIT: Retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GSON_CONVERTER_FACTORY)
+            .addCallAdapterFactory(RX_JAVA_3_CALL_ADAPTER_FACTORY)
             .build()
-        val INSTANCE: Api = RETROFIT.create(
-            Api::class.java
-        )
+        val INSTANCE: Api = RETROFIT.create(Api::class.java)
     }
 }

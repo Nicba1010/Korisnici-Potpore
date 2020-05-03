@@ -1,5 +1,6 @@
 package dev.banic.korisnicipotpore
 
+import io.reactivex.rxjava3.core.Single
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -13,5 +14,7 @@ class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
+
+        Single.just(null)
     }
 }

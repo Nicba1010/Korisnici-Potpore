@@ -13,6 +13,7 @@ import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import dev.banic.korisnicipotpore.R
 import dev.banic.korisnicipotpore.ui.list.CompanyListsPager
+import dev.banic.korisnicipotpore.usecases.data.api.unified.GetApiListCountUseCase
 import dev.banic.korisnicipotpore.util.makeNetworkCheckSnackbar
 import dev.banic.korisnicipotpore.util.setSearchButtonEnabled
 import kotlinx.android.synthetic.main.activity_main.*
@@ -25,6 +26,8 @@ class CompanyListsActivity : AppCompatActivity() {
     private val sp: SharedPreferences by lazy {
         getPreferences(Context.MODE_PRIVATE)
     }
+
+    lateinit var getApiListCountUseCase: GetApiListCountUseCase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +55,7 @@ class CompanyListsActivity : AppCompatActivity() {
     }
 
     private fun prepareOtherViews() {
-        vp_lists.adapter = CompanyListsPager(this) {
+        vp_lists.adapter = CompanyListsPager(this, getApiListCountUseCase) {
             makeNetworkCheckSnackbar(
                 root_frame,
                 R.string.please_enable_network,

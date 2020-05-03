@@ -8,36 +8,34 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import dev.banic.korisnicipotpore.R
-import dev.banic.korisnicipotpore.data.DataStorageHandler
-import dev.banic.korisnicipotpore.data.DataStorageHandler.LoadSource
-import dev.banic.korisnicipotpore.data.DataStorageHandler.NetworkNotAvailableException
 import dev.banic.korisnicipotpore.ui.ActivityFloatingActionButtonClickListener
 import dev.banic.korisnicipotpore.ui.FilterViewModel
 import dev.banic.korisnicipotpore.ui.list.CompanyAdapter.Companion.SortKey
 import dev.banic.korisnicipotpore.ui.sort.SortDialogFragment
 import dev.banic.korisnicipotpore.ui.sort.SortDialogFragment.OnSortChosenListener
-import dev.banic.korisnicipotpore.util.animateLoading
-import dev.banic.korisnicipotpore.util.makeNetworkCheckSnackbar
-import dev.banic.korisnicipotpore.util.setNonSwipeable
+import dev.banic.korisnicipotpore.usecases.data.api.local.RemoveLocalApiDataForYearMonthUseCase
+import dev.banic.korisnicipotpore.usecases.data.api.unified.GetApiDataForYearMonthUseCase.LoadSource
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_list.*
-import kotlinx.android.synthetic.main.fragment_list.view.*
+import timber.log.Timber
+import kotlin.properties.Delegates
 
-class CompanyListFragment : Fragment(),
-    ActivityFloatingActionButtonClickListener, OnSortChosenListener {
+class CompanyListFragment : Fragment(), ActivityFloatingActionButtonClickListener,
+    OnSortChosenListener {
     private var snackbar: Snackbar? = null
 
     private val filterViewModel: FilterViewModel by lazy {
         ViewModelProvider(requireActivity()).get(FilterViewModel::class.java)
     }
-    private lateinit var companyAdapter: CompanyAdapter
 
-    private var year: Int =
-        DataStorageHandler.STARTING_YEAR
-    private var month: Int =
-        DataStorageHandler.STARTING_MONTH
+    lateinit var removeLocalApiDataForYearMonthUseCase: RemoveLocalApiDataForYearMonthUseCase
+
+    private var year by Delegates.notNull<Int>()
+    private var month by Delegates.notNull<Int>()
+    private lateinit var companyAdapter: CompanyAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,20 +55,21 @@ class CompanyListFragment : Fragment(),
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        companyAdapter =
-            CompanyAdapter(mutableListOf())
+        companyAdapter = CompanyAdapter()
         rv_data.layoutManager = LinearLayoutManager(requireContext())
         rv_data.adapter = companyAdapter
 
         srl_data.setOnRefreshListener {
-            DataStorageHandler.removeData(
-                requireContext(),
-                year,
-                month
-            )
-            loadData(view) {
-                srl_data.isRefreshing = false
-            }
+            removeLocalApiDataForYearMonthUseCase.execute(year, month)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    loadData(view) {
+                        srl_data.isRefreshing = false
+                    }
+                }, {
+                    Timber.e(it)
+                })
         }
 
         filterViewModel.filter.observe(viewLifecycleOwner, Observer {
@@ -118,71 +117,71 @@ class CompanyListFragment : Fragment(),
         var lastLoadSource: LoadSource? = null
         var preloadSnackbar: Snackbar? = null
 
-        DataStorageHandler.getData(
-            requireContext(), year, month,
-            { it, loadSource ->
-                when (loadSource) {
-                    LoadSource.NETWORK_PRELOAD -> {
-                        preloadSnackbar = Snackbar.make(
-                            root,
-                            getString(R.string.data_partially_loaded),
-                            Snackbar.LENGTH_INDEFINITE
-                        ).setNonSwipeable().animateLoading().also {
-                            it.show()
-                        }
-                    }
-                    LoadSource.NETWORK -> {
-                        when (lastLoadSource) {
-                            LoadSource.NETWORK_PRELOAD -> {
-                                preloadSnackbar?.dismiss()
-                                Snackbar.make(
-                                    root,
-                                    getString(R.string.data_completely_loaded),
-                                    Snackbar.LENGTH_LONG
-                                ).show()
-                            }
-                            LoadSource.NETWORK -> {
-                            }
-                            LoadSource.LOCAL_DATA -> {
-                                Snackbar.make(
-                                    root,
-                                    getString(R.string.local_data_updated),
-                                    Snackbar.LENGTH_LONG
-                                ).show()
-                            }
-                        }
-                    }
-                    LoadSource.LOCAL_DATA -> {
-                    }
-                }
-                lastLoadSource = loadSource
-                onDataLoaded?.invoke()
-                companyAdapter.updateData(it.data)
-            }, { t ->
-                preloadSnackbar?.dismiss()
-                if (t is NetworkNotAvailableException) {
-                    requireActivity().makeNetworkCheckSnackbar(
-                        root,
-                        R.string.please_enable_network,
-                        R.string.please_enable_network_manually,
-                        R.string.trying_to_connect,
-                        Snackbar.LENGTH_INDEFINITE
-                    ).addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
-                        override fun onDismissed(transientBottomBar: Snackbar, event: Int) {
-                            loadData(view)
-                        }
-                    }).show()
-                } else {
-                    snackbar = Snackbar.make(
-                        view.root,
-                        R.string.unexpected_error_loading_data,
-                        Snackbar.LENGTH_SHORT
-                    ).also {
-                        it.show()
-                    }
-                }
-            }
-        )
+//        DataStorageHandler.getData(
+//            requireContext(), year, month,
+//            { it, loadSource ->
+//                when (loadSource) {
+//                    LoadSource.NETWORK_PRELOAD -> {
+//                        preloadSnackbar = Snackbar.make(
+//                            root,
+//                            getString(R.string.data_partially_loaded),
+//                            Snackbar.LENGTH_INDEFINITE
+//                        ).setNonSwipeable().animateLoading().also {
+//                            it.show()
+//                        }
+//                    }
+//                    LoadSource.NETWORK -> {
+//                        when (lastLoadSource) {
+//                            LoadSource.NETWORK_PRELOAD -> {
+//                                preloadSnackbar?.dismiss()
+//                                Snackbar.make(
+//                                    root,
+//                                    getString(R.string.data_completely_loaded),
+//                                    Snackbar.LENGTH_LONG
+//                                ).show()
+//                            }
+//                            LoadSource.NETWORK -> {
+//                            }
+//                            LoadSource.LOCAL_DATA -> {
+//                                Snackbar.make(
+//                                    root,
+//                                    getString(R.string.local_data_updated),
+//                                    Snackbar.LENGTH_LONG
+//                                ).show()
+//                            }
+//                        }
+//                    }
+//                    LoadSource.LOCAL_DATA -> {
+//                    }
+//                }
+//                lastLoadSource = loadSource
+//                onDataLoaded?.invoke()
+//                companyAdapter.updateData(it.data)
+//            }, { t ->
+//                preloadSnackbar?.dismiss()
+//                if (t is NetworkNotAvailableException) {
+//                    requireActivity().makeNetworkCheckSnackbar(
+//                        root,
+//                        R.string.please_enable_network,
+//                        R.string.please_enable_network_manually,
+//                        R.string.trying_to_connect,
+//                        Snackbar.LENGTH_INDEFINITE
+//                    ).addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
+//                        override fun onDismissed(transientBottomBar: Snackbar, event: Int) {
+//                            loadData(view)
+//                        }
+//                    }).show()
+//                } else {
+//                    snackbar = Snackbar.make(
+//                        view.root,
+//                        R.string.unexpected_error_loading_data,
+//                        Snackbar.LENGTH_SHORT
+//                    ).also {
+//                        it.show()
+//                    }
+//                }
+//            }
+//        )
     }
 
     override fun onPause() {

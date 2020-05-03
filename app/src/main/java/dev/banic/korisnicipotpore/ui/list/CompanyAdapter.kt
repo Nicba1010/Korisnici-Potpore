@@ -13,7 +13,7 @@ import dev.banic.korisnicipotpore.ui.list.CompanyAdapter.Companion.SortKey.*
 import kotlinx.android.synthetic.main.item_company.view.*
 
 class CompanyAdapter(
-    private var data: MutableList<Company>,
+    private var data: MutableList<Company> = mutableListOf(),
     private var filteredData: MutableList<Company> = data
 ) : RecyclerView.Adapter<CompanyAdapter.CompanyViewHolder>(), Filterable {
     private var sortKeyDirty: Boolean = false
